@@ -74,7 +74,7 @@ const app = {
             
             this.currentUser.name = name;
             this.currentUser.pref = selectedPrefs.length ? selectedPrefs : ["한식", "일식", "양식", "중식", "고기"];
-            this.currentUser.level = 1; // associate default
+            if (!this.currentUser.level) this.currentUser.level = 1;
             this.currentUser.allergies = allergies;
             
             document.getElementById('display-name').textContent = name;
