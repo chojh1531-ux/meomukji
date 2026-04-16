@@ -7,7 +7,7 @@
     --text-main: #212529;
     --text-sub: #6C757D;
     --border-color: #E9ECEF;
-    --shadow: 0 10px 30px rgba(0,0,0,0.06);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     --radius: 20px;
 }
 
@@ -19,7 +19,8 @@
 }
 
 body {
-    background-color: #e9ecef; /* Desktop background */
+    background-color: #e9ecef;
+    /* Desktop background */
     display: flex;
     justify-content: center;
     color: var(--text-main);
@@ -35,7 +36,7 @@ body {
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
-    box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
 }
 
 .screen {
@@ -50,8 +51,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .header {
@@ -102,7 +110,8 @@ h3 {
     color: var(--text-main);
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
     width: 100%;
     padding: 16px;
     border: 1px solid var(--border-color);
@@ -113,7 +122,8 @@ input[type="text"], select {
     background: #fdfdfd;
 }
 
-input[type="text"]:focus, select:focus {
+input[type="text"]:focus,
+select:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(255, 90, 0, 0.1);
 }
@@ -268,6 +278,7 @@ select {
     margin-left: -8px;
     margin-right: 12px;
 }
+
 .top-nav h2 {
     font-size: 18px;
     font-weight: 700;
@@ -368,7 +379,7 @@ select {
     justify-content: center;
     font-weight: 700;
     font-size: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .result-info {
@@ -454,4 +465,262 @@ select {
 
 .map-btn:active {
     background: #E9ECEF;
+}
+
+/* Kitsch Onboarding Styles */
+.progress-bar-container {
+    height: 22px;
+    background: #FFFFFF;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    margin-top: -10px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 33%;
+    background: var(--primary);
+}
+
+.step-text {
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 15px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.greeting-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.greeting-header p {
+    color: var(--text-sub);
+    font-size: 15px;
+    margin-bottom: 32px;
+}
+
+.input-group.kitsch label {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.kitsch-input {
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 18px 16px;
+    background: #FFF;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    width: 100%;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.category-item {
+    border: 2px solid #F1F3F5;
+    border-radius: 16px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFF;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.category-item .emoji {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.category-item .label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-sub);
+}
+
+.category-item.active {
+    border: 2px solid var(--primary);
+    background: rgba(255, 90, 0, 0.04);
+}
+
+.category-item.active .label {
+    color: var(--text-main);
+}
+
+.bottom-btn {
+    margin-top: 40px;
+    border-radius: 16px;
+    font-size: 18px;
+    padding: 20px;
+    background: var(--primary);
+    box-shadow: none;
+    width: 100%;
+}
+
+/* Members Screen Styles */
+.orange-header {
+    background: #E85D04;
+    color: white;
+    padding: 32px 24px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.orange-header .dept-text {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.orange-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    line-height: 1.3;
+}
+
+.orange-header .login-info {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.tab-container {
+    display: flex;
+    gap: 8px;
+    padding: 24px 24px 0;
+}
+
+.tab-btn {
+    padding: 14px 18px;
+    background: #FDFDFD;
+    color: #E85D04;
+    border: 1px solid #F1E5DD;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+}
+
+.tab-btn.active {
+    background: #E85D04;
+    color: white;
+    border-color: #0047AB;
+    box-shadow: 0 0 0 3px #0056D2;
+}
+
+.member-card {
+    background: white;
+    margin: 24px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.member-card h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #343A40;
+}
+
+.member-subtitle {
+    color: #6C757D;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.member-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.member-table th {
+    color: #D35400;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 14px 8px;
+    border-bottom: 1px solid #FAD7A1;
+    text-align: left;
+    background: #FFF7EB;
+}
+
+.member-table td {
+    padding: 16px 8px;
+    border-bottom: 1px solid #F1F3F5;
+    font-size: 14px;
+    vertical-align: middle;
+    color: #212529;
+}
+
+.level-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.level-badge.lvl-5,
+.level-badge.lvl-4 {
+    background: #FDE0E0;
+    color: #D32F2F;
+}
+
+.level-badge.lvl-3 {
+    background: #FCEFD3;
+    color: #D35400;
+}
+
+.level-badge.lvl-2,
+.level-badge.lvl-1 {
+    background: #E1F0FA;
+    color: #2C3E50;
+}
+
+.editable-box {
+    border: 1px solid #FAD7A1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: white;
+    display: inline-block;
+}
+
+.priv-toggle {
+    background: #FCEFD3;
+    color: #D35400;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.no-auth {
+    color: #AAB7B8;
+    font-size: 13px;
+    font-weight: 600;
 }

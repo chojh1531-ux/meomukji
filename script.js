@@ -8,6 +8,12 @@ const app = {
 
     init() {
         this.bindEvents();
+        // Splash screen timeout
+        setTimeout(() => {
+            if(document.getElementById('splash-screen').classList.contains('active')) {
+                this.navigate('onboarding-screen');
+            }
+        }, 2000);
     },
 
     bindEvents() {
@@ -20,7 +26,7 @@ const app = {
             });
         });
 
-        // Start Button
+        // Start Button (Hidden)
         document.getElementById('start-btn').addEventListener('click', () => {
             const name = document.getElementById('user-name').value.trim();
             const allergies = document.getElementById('user-allergies').value
@@ -43,7 +49,35 @@ const app = {
             
             document.getElementById('display-name').textContent = name;
             
-            // Add user to chip list in filter screen
+            this.updateMemberList();
+            this.navigate('home-screen');
+        });
+
+        // Kitsch category grid click
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.currentTarget.classList.toggle('active');
+            });
+        });
+
+        // Kitsch fake next btn
+        document.getElementById('next-btn-fake').addEventListener('click', () => {
+            const name = document.getElementById('user-name').value.trim();
+            if(!name) { alert("이름 또는 닉네임을 입력해주세요!"); return; }
+            
+            const allergies = document.getElementById('user-allergies').value
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean);
+
+            const selectedPrefs = Array.from(document.querySelectorAll('.category-item.active')).map(el => el.dataset.val);
+            
+            this.currentUser.name = name;
+            this.currentUser.pref = selectedPrefs.length ? selectedPrefs : ["한식", "일식", "양식", "중식", "고기"];
+            this.currentUser.level = 1; // associate default
+            this.currentUser.allergies = allergies;
+            
+            document.getElementById('display-name').textContent = name;
             this.updateMemberList();
             this.navigate('home-screen');
         });
@@ -55,6 +89,11 @@ const app = {
 
         document.getElementById('btn-detailed-filter').addEventListener('click', () => {
             this.navigate('filter-screen');
+        });
+        
+        document.getElementById('btn-members-manage').addEventListener('click', () => {
+            this.renderMembersTable();
+            this.navigate('members-screen');
         });
         
         // Chip toggle
@@ -93,6 +132,54 @@ const app = {
         setTimeout(() => {
             target.classList.add('active');
         }, 10);
+    },
+
+    renderMembersTable() {
+        const tbody = document.getElementById('member-tbody');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        
+        const allProfiles = {...window.RecommendationEngine.MOCK_PROFILES};
+        if(!allProfiles[this.currentUser.name]) {
+            allProfiles[this.currentUser.name] = {
+                name: this.currentUser.name,
+                level: this.currentUser.level,
+                pref: this.currentUser.pref,
+                allergies: this.currentUser.allergies
+            };
+        }
+
+        Object.values(allProfiles).forEach(p => {
+            const isMe = p.name === this.currentUser.name;
+            const lvlBadge = `<span class="level-badge lvl-${p.level}">Level ${p.level}</span>`;
+            
+            let prefHtml = (p.pref && p.pref.length) ? p.pref.join(', ') : '없음';
+            let noteHtml = (p.allergies && p.allergies.length) ? p.allergies.join(', ') : '해당없음';
+            let privHtml = `<span class="no-auth">권한 없음</span>`;
+            
+            if (isMe) {
+                prefHtml = `<div class="editable-box">${prefHtml}</div>`;
+                noteHtml = `<div class="editable-box">${noteHtml}</div>`;
+                privHtml = `<button class="priv-toggle">비공개 OFF</button>`;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td style="font-weight:700;">${p.name}</td>
+                    <td>${lvlBadge}</td>
+                    <td>${prefHtml}</td>
+                    <td>${noteHtml}</td>
+                    <td>${privHtml}</td>
+                </tr>
+            `;
+        });
+        
+        let displayLevel = "Level 1";
+        if(this.currentUser.level === 3) displayLevel = "Manager";
+        if(this.currentUser.level === 4) displayLevel = "Senior Manager";
+        if(this.currentUser.level === 5) displayLevel = "임원";
+        
+        document.getElementById('member-login-name').textContent = `${this.currentUser.name} (${displayLevel})`;
     },
 
     updateMemberList() {

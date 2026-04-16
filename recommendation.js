@@ -1,5 +1,6 @@
 // Mock Data for the Recommendation Engine
 
+
 const RESTAURANTS = [
     {
         id: 1,
@@ -66,12 +67,12 @@ const RESTAURANTS = [
 const MOCK_PROFILES = {
     "김매니저": { name: "김매니저", level: 3, pref: ["한식", "중식"], dislike: ["양식"], allergies: [] },
     "박시니어": { name: "박시니어", level: 4, pref: ["일식", "양식"], dislike: [], allergies: ["땅콩"] },
-    "이어소시": { name: "이어소시", level: 2, pref: ["중식", "기타"], dislike: ["일식"], allergies: [] },
+    "이어쏘": { name: "이어쏘", level: 2, pref: ["중식", "기타"], dislike: ["일식"], allergies: [] },
     "최임원": { name: "최임원", level: 5, pref: ["일식", "한식"], dislike: ["중식"], allergies: [] },
 };
 
 function getWeightByLevel(level) {
-    switch(parseInt(level)) {
+    switch (parseInt(level)) {
         case 5: return 3.0;
         case 4: return 2.0;
         case 3: return 1.5;
@@ -81,11 +82,11 @@ function getWeightByLevel(level) {
 
 function recommend(currentUser, members, purposeList) {
     let allMembers = [currentUser, ...members.map(name => MOCK_PROFILES[name])].filter(Boolean);
-    
+
     // 1. Hard Filter (Allergies)
     let combinedAllergies = [];
     allMembers.forEach(mem => {
-        if(mem.allergies && mem.allergies.length > 0) {
+        if (mem.allergies && mem.allergies.length > 0) {
             combinedAllergies = [...combinedAllergies, ...mem.allergies];
         }
     });
@@ -100,10 +101,10 @@ function recommend(currentUser, members, purposeList) {
         r.reasonLog = [];
         let highestLevelPref = 0;
         let highestLevelName = "";
-        
+
         allMembers.forEach(mem => {
             let weight = getWeightByLevel(mem.level);
-            
+
             if (mem.pref && mem.pref.includes(r.category)) {
                 r.score += 10 * weight;
                 if (mem.level > highestLevelPref) {
@@ -115,20 +116,20 @@ function recommend(currentUser, members, purposeList) {
                 r.score -= 5 * weight;
             }
         });
-        
+
         if (highestLevelPref >= 4 && highestLevelName !== currentUser.name) {
-             r.reasonLog.push(`${highestLevelName}님이 선호하는 ${r.category} 식당입니다!`);
+            r.reasonLog.push(`${highestLevelName}님이 선호하는 ${r.category} 식당입니다!`);
         } else if (highestLevelPref === currentUser.level) {
-             r.reasonLog.push(`내 취향에 딱 맞는 ${r.category} 요리!`);
+            r.reasonLog.push(`내 취향에 딱 맞는 ${r.category} 요리!`);
         }
-        
+
         // Add random slight variation to break ties naturally
         r.score += Math.random();
     });
 
     // Sort by score descending
     availableRestaurants.sort((a, b) => b.score - a.score);
-    
+
     return availableRestaurants.slice(0, 3);
 }
 
