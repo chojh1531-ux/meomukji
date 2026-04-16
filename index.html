@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>막내를 구원하라! 메뉴 추천 Agent</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <div id="app-container">
+        <!-- Onboarding Screen -->
+        <section id="onboarding-screen" class="screen active">
+            <div class="header">
+                <h1>막내를 구원하라!</h1>
+                <p>Digital Product 본부 메뉴 추천 Agent</p>
+            </div>
+            <div class="card form-card">
+                <h2>프로필 생성</h2>
+                <div class="input-group" style="margin-top: 16px;">
+                    <label for="user-name">이름</label>
+                    <input type="text" id="user-name" placeholder="이름을 입력하세요">
+                </div>
+                <div class="input-group">
+                    <label>직급</label>
+                    <div class="level-selector">
+                        <button class="level-btn" data-level="1">대리 이하 <span>(Associate)</span></button>
+                        <button class="level-btn" data-level="3">과장 <span>(Manager)</span></button>
+                        <button class="level-btn" data-level="4">차장/부장 <span>(Senior Manager)</span></button>
+                        <button class="level-btn" data-level="5">임원 <span>(실장, 본부장)</span></button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>기피 음식 / 알레르기</label>
+                    <input type="text" id="user-allergies" placeholder="예: 땅콩, 오이, 비건">
+                </div>
+                <button id="start-btn" class="primary-btn large">시작하기</button>
+            </div>
+        </section>
+
+        <!-- Home Screen -->
+        <section id="home-screen" class="screen">
+            <div class="top-nav" style="justify-content: flex-end; margin-bottom: 0;">
+                <button class="icon-btn" onclick="app.navigate('onboarding-screen')"><i class="fas fa-cog"></i></button>
+            </div>
+            <div class="header" style="margin-top: 10px;">
+                <h1>안녕하세요, <span id="display-name"></span>님!</h1>
+                <p>오늘도 막내의 짐을 덜어드릴게요.</p>
+            </div>
+            
+            <div class="action-cards">
+                <div class="card action-card highlight" id="btn-quick-curation">
+                    <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
+                    <h3>알잘딱깔센 추천</h3>
+                    <p>내 프로필 기반으로 현재 시간에 맞는 최적의 메뉴 즉시 추천</p>
+                </div>
+                
+                <div class="card action-card" id="btn-detailed-filter">
+                    <div class="icon-wrap"><i class="fas fa-users"></i></div>
+                    <h3>팀원 맞춤 상세 필터</h3>
+                    <p>직급과 팀원 성향을 고려해 안전하게 메뉴 고르기</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Screen -->
+        <section id="filter-screen" class="screen">
+            <div class="top-nav">
+                <button class="back-btn" onclick="app.navigate('home-screen')"><i class="fas fa-arrow-left"></i></button>
+                <h2>상세 필터</h2>
+            </div>
+            <div class="filter-container">
+                <div class="card">
+                    <h3>인원 구성</h3>
+                    <p class="subtitle" style="font-size:13px; color:#6C757D; margin-bottom:12px;">참석할 팀원을 추가하면 가중치가 자동 계산됩니다.</p>
+                    <div id="member-list" class="chip-group">
+                        <!-- My profile chip added dynamically -->
+                    </div>
+                    <div class="add-member-form">
+                        <select id="member-select">
+                            <option value="">+ 팀원 추가하기 (검색)</option>
+                            <option value="김매니저">김매니저 (Manager)</option>
+                            <option value="박시니어">박시니어 (Senior Manager)</option>
+                            <option value="이어소시">이어소시 (Associate)</option>
+                            <option value="최임원">최임원 (임원)</option>
+                        </select>
+                    </div>
+                    <div class="calculation-hint">
+                        <i class="fas fa-info-circle"></i> 직급별 선호도가 스마트하게 반영됩니다.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>필수 테마 조건</h3>
+                    <div class="input-group" style="margin-top: 16px;">
+                        <label>장소 / 동네</label>
+                        <input type="text" id="filter-place" placeholder="예: 강남역, 사옥 근처">
+                    </div>
+                    <div class="input-group">
+                        <label>최근 먹은 메뉴 (제외)</label>
+                        <input type="text" id="filter-recent" placeholder="예: 돈까스, 삼겹살">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>상황별 상세 조건</h3>
+                    
+                    <div class="input-group" style="margin-top: 16px;">
+                        <label>목적</label>
+                        <div class="chip-group toggle-group" id="filter-purpose">
+                            <button class="chip active">점심 식사</button>
+                            <button class="chip">저녁 회식</button>
+                            <button class="chip">미팅/접대</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>분위기</label>
+                        <div class="chip-group toggle-group" id="filter-atmosphere">
+                            <button class="chip active">상관없음</button>
+                            <button class="chip">조용한/프라이빗</button>
+                            <button class="chip">시끌벅적/활기찬</button>
+                            <button class="chip">트렌디/인스타감성</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>편안함(자리)</label>
+                        <div class="chip-group toggle-group" id="filter-comfort">
+                            <button class="chip active">상관없음</button>
+                            <button class="chip">매우 편안함</button>
+                            <button class="chip">격식있는 자리</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>예산 (1인 기준)</label>
+                        <div class="chip-group toggle-group" id="filter-budget">
+                            <button class="chip active">상관없음</button>
+                            <button class="chip">1만원 이하</button>
+                            <button class="chip">2만원 이하</button>
+                            <button class="chip">3만원 이상</button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>웨이팅 인내심</label>
+                        <div class="chip-group toggle-group" id="filter-waiting">
+                            <button class="chip active">15분 이내</button>
+                            <button class="chip">웨이팅 절대 금지</button>
+                            <button class="chip">맛집이면 기다림</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>위치/현재 날씨</label>
+                        <div class="chip-group toggle-group" id="filter-weather">
+                            <button class="chip active">맑음</button>
+                            <button class="chip">비/눈</button>
+                            <button class="chip">흐림/추움</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="find-menu-btn" class="primary-btn large">완벽한 메뉴 찾기 <i class="fas fa-search" style="margin-left: 8px;"></i></button>
+            </div>
+        </section>
+
+        <!-- Result Screen -->
+        <section id="result-screen" class="screen">
+            <div class="top-nav">
+                <button class="back-btn" onclick="app.navigate('home-screen')"><i class="fas fa-home"></i></button>
+                <h2>추천 결과</h2>
+            </div>
+            
+            <div class="results-header">
+                <p>알잘딱깔센 분석 완료!</p>
+                <h3>가장 확률 높은 장소 <span class="highlight-text">Top 3</span></h3>
+            </div>
+
+            <div id="result-container" class="card-list">
+                <!-- Results rendered here -->
+            </div>
+        </section>
+    </div>
+
+    <script src="recommendation.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
